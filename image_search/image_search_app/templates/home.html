@@ -1,0 +1,28 @@
+<!-- my_app/templates/upload_photo.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Photo</title>
+</head>
+<body>
+    <h1>Upload a Photo</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="image">
+        <button type="submit">Upload</button>
+    </form>
+    {% if result %}
+        <h2>Similar Images:</h2>
+        <ul>
+            {% for item in result %}
+                <li>
+                    <img src="{{ item.image_url }}" alt="Similar Image">
+                    Class: {{ item.class_name }}, Image: {{ item.image_name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

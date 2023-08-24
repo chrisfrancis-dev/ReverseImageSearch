@@ -1,0 +1,20 @@
+# Compiled Python files
+image_search/image_search/__pycache__/
+image_search/image_search/*.pyc
+image_search/image_search/*.pyo
+
+image_search/image_search_app/__pycache__/
+image_search/image_search_app/*.pyc
+image_search/image_search_app/*.pyo
+
+# Database files
+image_search/db.sqlite3
+
+# Static files (CSS, JavaScript, images)
+image_search/static/
+
+# Media files
+image_search/media/
+
+# Ignore the venv (virtual environment)
+reverse_image_search

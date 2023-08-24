@@ -1,0 +1,7 @@
+tensorflow
+keras
+Pillow
+numpy
+annoy
+Django
+scipy
