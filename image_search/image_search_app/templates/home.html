@@ -1,28 +1,93 @@
-<!-- my_app/templates/upload_photo.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Photo</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Upload Photo</title>
+        <!-- Add Bootstrap CSS link -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <style>
+            /* Custom CSS for image upload preview */
+            body {
+                background-color: #4CAF50; /* Green background color */
+            }
+    
+            .card-header h1 {
+                color: #006400; /* Darker green color for the header text */
+            }
+    
+            .image-area {
+                border: 2px dashed rgba(255, 255, 255, 0.7);
+                padding: 1rem;
+                position: relative;
+                background-color: #ffffff; /* White background color for the image preview area */
+            }
+    
+            .image-area::before {
+                content: 'Uploaded image result';
+                color: #000000; /* Text color for the label */
+                font-weight: bold;
+                text-transform: uppercase;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 0.8rem;
+                z-index: 1;
+            }
+    
+            .image-area img {
+                z-index: 2;
+                position: relative;
+                max-width: 100%; /* Ensure the image fits within the box */
+                height: auto; /* Preserve aspect ratio */
+            }
+        </style>
+    </head>
 <body>
-    <h1>Upload a Photo</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="file" name="image">
-        <button type="submit">Upload</button>
-    </form>
-    {% if result %}
-        <h2>Similar Images:</h2>
-        <ul>
-            {% for item in result %}
-                <li>
-                    <img src="{{ item.image_url }}" alt="Similar Image">
-                    Class: {{ item.class_name }}, Image: {{ item.image_name }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="text-center">Upload a Photo</h1>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="image">Choose an image:</label>
+                                <input type="file" name="image" class="form-control-file">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if result %}
+            <div class="row mt-5">
+                <div class="col-md-12">
+                    <h2 class="text-center">Similar Images:</h2>
+                    <div class="row">
+                        {% for item in result %}
+                            <div class="col-md-4 mb-4">
+                                <div class="card">
+                                    <img src="{{ item.image_url }}" class="card-img-top" alt="Similar Image">
+                                    
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Add Bootstrap JS script link (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
