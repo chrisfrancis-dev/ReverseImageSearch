@@ -19,17 +19,24 @@ generator = datagen.flow_from_directory(root_dir, target_size=(224, 224), batch_
 num_images = len(generator.filenames)
 num_epochs = int(math.ceil(num_images / batch_size))
 
-# Obtain the feature vectors using the pre-trained model
-feature_list = model.predict(generator, num_epochs)
+# # Obtain the feature vectors using the pre-trained model
+# feature_list = model.predict(generator, num_epochs)
 
-# Flatten the spatial dimensions of the feature vectors
-flatten_feature_list = [feature.flatten() for feature in feature_list]
+# # Flatten the spatial dimensions of the feature vectors
+# flatten_feature_list = [feature.flatten() for feature in feature_list]
 
-# Create and build the Annoy index
+# # Create and build the Annoy index
+# annoy_index = AnnoyIndex(2048, 'angular')
+# for i, feature in enumerate(flatten_feature_list):
+#     annoy_index.add_item(i, feature)
+# annoy_index.build(40)
+
+# Construct the full path to the .ann file
+annoy_index_path = os.path.join(os.path.dirname(__file__), '..', 'media', 'My_DataSet', 'annoy_caltech101index.ann')
+
+# Load the Annoy index
 annoy_index = AnnoyIndex(2048, 'angular')
-for i, feature in enumerate(flatten_feature_list):
-    annoy_index.add_item(i, feature)
-annoy_index.build(40)
+annoy_index.load(annoy_index_path)
 
 def home(request):
     if request.method == 'POST' and request.FILES.get('image'):
@@ -48,6 +55,8 @@ def home(request):
         nearest_neighbors_indices = result[0]
         similar_images = []
         for neighbor_index in nearest_neighbors_indices:
+            class_name = generator.filenames[neighbor_index].split('/')[0]
+            image_name = generator.filenames[neighbor_index].split('/')[1]
             image_url = f"{settings.MEDIA_URL}My_DataSet/{class_name}/{image_name}"
             similar_images.append({
                 'image_url': image_url,
