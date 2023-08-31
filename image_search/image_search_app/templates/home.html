@@ -42,6 +42,22 @@
                 height: auto; /* Preserve aspect ratio */
             }
         </style>
+        <script>
+            function previewImage(input) {
+                var preview = document.getElementById('imagePreview');
+                var file = input.files[0];
+    
+                if (file) {
+                    var reader = new FileReader();
+    
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                    };
+    
+                    reader.readAsDataURL(file);
+                }
+            }
+        </script>
     </head>
 <body>
     <div class="container mt-5">
@@ -56,7 +72,10 @@
                             {% csrf_token %}
                             <div class="form-group">
                                 <label for="image">Choose an image:</label>
-                                <input type="file" name="image" class="form-control-file">
+                                {{ form.image }}
+                                <div class="input-group mb-3"><input type="file" name="image" accept="image/*" class="form-control-file" required></div>
+
+                                
                             </div>
                             <button type="submit" class="btn btn-primary">Upload</button>
                         </form>
